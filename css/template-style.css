@@ -82,6 +82,7 @@ p.logo {
 }
 p.logo strong {
 	font-weight: 700;
+	font-size:18;
 }
 .top-nav li a {
 	border-top: 2px solid #00283a;
