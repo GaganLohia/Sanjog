@@ -1,5 +1,12 @@
 <a href="intent:#Intent;scheme=com.amway.americas.NA.businesscenter;package=com.amway.americas.NA.businesscenter;end"> Open BusinessCenter </a>
-<head>
-  <link rel="stylesheet" type="text/css" href="intent:#Intent;scheme=com.amway.americas.NA.businesscenter;package=com.amway.americas.NA.businesscenter;end" />
-</head>
-<p> URL:- intent:#Intent;scheme=com.amway.americas.NA.businesscenter;package=com.amway.americas.NA.businesscenter;end</p>
+
+<p> URLNEW:- intent:#Intent;scheme=com.amway.americas.NA.businesscenter;package=com.amway.americas.NA.businesscenter;end</p>
+
+<script>
+    window.onload = function() {
+    <!-- Deep link URL for existing users with app already installed on their device -->
+        window.location = 'com.amway.americas.NA.businesscenter://';
+    <!-- Download URL (TUNE link) for new users to download the app -->
+        setTimeout("window.location = 'http://google.com';", 1000);
+    }
+    </script>
