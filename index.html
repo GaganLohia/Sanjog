@@ -1,9 +1,14 @@
-<a id='d99' href="intent:#Intent;scheme=com.amway.americas.NA.businesscenter;package=com.amway.americas.NA.businesscenter;end"> Open BusinessCenter </a>
+<a id='data' href="com.amway.americas.NA.businesscenter://"> Open BusinessCenter </a>
 
 <p> URLNEW2596:- intent:#Intent;scheme=com.amway.americas.NA.businesscenter;package=com.amway.americas.NA.businesscenter;end</p>
 
 <script>
-    window.onload = function() {
-        window.location.href = 'intent:#Intent;scheme=com.amway.americas.NA.businesscenter;package=com.amway.americas.NA.businesscenter;end';
-    }
+    (function init() {
+     var showMessage = function() {
+            var anchorLink = document.getElementById('data');
+            anchorLink.click();
+        };
+        const delaySeconds = 4;
+        setTimeout(showMessage, delaySeconds * 1000);
+    })();
 </script>
