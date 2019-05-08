@@ -2,13 +2,71 @@
 
 <p> URLNEW2596787889:- intent:#Intent;scheme=com.amway.americas.NA.businesscenter;package=com.amway.americas.NA.businesscenter;end</p>
 
-<script>
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/> 
+    <style>
+    html, body {
+        height: 100%;
+        margin: 0px;
+    }
+    .gotoMsg {
+        color: white;
+        font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        text-align: center;
+    }
+    .centerVertical {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        height: 100%;
+    }
+    .centeredContent {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        text-align: center;
+    }
+    .dataParams {
+        color: #262626;
+        z-index: -1;
+        position: absolute;
+    }
+    </style>
+    <script type="text/javascript">
     (function init() {
      var showMessage = function() {
-            var anchorLink = document.getElementById('data');
-            anchorLink.click();
+            var msgObj = document.getElementById('msg-go-to-amplify');
+            msgObj.style.display = 'block';
+            var spinnerObj = document.getElementById('spinner');
+            spinnerObj.remove();
+			
+			var userImage = document.getElementById('imageOtherUser');
+			userImage.click();
         };
+
         const delaySeconds = 4;
         setTimeout(showMessage, delaySeconds * 1000);
     })();
-</script>
+    </script>
+</head>
+<body style="background-color: #ffffff;position: relative; text-align: center">
+
+    <!-- id="<%- dataId %>" class="dataParams"><%- data %></div-->
+    <div class="centerVertical">
+    <div class="centeredContent">
+        <object id="spinner" data="../../images/Rolling-1s-200px.svg" type="image/svg+xml" width="100px">
+            <img src="../../images/Rolling-1s-200px.gif" />
+        </object>
+        <div id="msg-go-to-amplify" style="display:none" class="gotoMsg">
+            <!--h3>Please close your browser and go to Amplify App to login in with your newly created Amway ID</h3-->
+			<a id="imageOtherUser" href="amplifydeep://com.alticor.amplify">Click this link to launch amplify app</a>
+			
+        </div>
+    </div>
+    </div>
+</body>
+</html>
