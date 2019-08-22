@@ -1,241 +1,38 @@
-<html class=" -webkit-"><head><style type="text/css">@charset "UTF-8";[ng\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\:form{display:block;}</style>
-        <title>Switch Share Duplicate</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<script>
 
-        <link href="fonts/font-awesome.css" rel="stylesheet" type="text/css" data-inprogress="">
-        <link href="css/main.css" rel="stylesheet" type="text/css" data-inprogress="">
-
-        <!--app.js-->
-        <script src="//tags.tiqcdn.com/utag/amway/ssd-web/prod/utag.js" type="text/javascript" async=""></script><script type="text/javascript" async="" src="http://cdn.heapanalytics.com/js/heap-3470378220.js"></script><script src="js/vendor/jquery-1.11.2.min.js"></script>
-        <script src="http://assets.adobedtm.com/82aecb95e0b4e7a4cd5816c4c5d4fb1902bdbcf5/satelliteLib-ad139a7774ba952f3a5a6ab7883b689403f5a8f9.js"></script>
-        <script src="js/vendor/prefixfree.min.js"></script>
-        <script src="js/vendor/prefixfree.viewport-units.js"></script>
-        <script src="js/vendor/CustomEvent-polyfill.js"></script>
-        <script src="js/vendor/mobile-detect/mobile-detect.min.js"></script>
-        <script src="js/vendor/angular.js"></script>
-        <script src="js/vendor/angular-filter.min.js"></script>
-        <script src="js/vendor/angular-stringFormatterModule.js"></script>
-        <script src="js/vendor/angular-sanitize.min.js"></script>
-        <script src="js/vendor/angular-animate.min.js"></script>
-        <script src="js/vendor/angular-touch.min.js"></script>
-        <script src="js/vendor/sha.js"></script>
-        <script src="js/jquery.numChooser.js"></script>
-        <script src="js/ssd-calculator.js"></script>
-        <script src="js/AmwayConnector.js"></script>
-        <script>window.localeSpecificAngularModules=['templates'];</script>
-        <script src="js/ProductListCtrl.js"></script>
-        <script src="js/_filters.js"></script>
-        <script src="js/_directives.js"></script>
-    <script src="js/_factories.js"></script>
-        <script src="js/_templates.js"></script>
-        <script src="js/SettingsCtrl.js"></script>
-        <script src="js/vendor/FastClick.js"></script>
-        <!--end of app.js-->
-
-        <!--app_US_en.js-->
-        <script src="js/vendor/locale/angular-locale_en-us.js"></script>
-        <script src="locale/products/products_US_en.js"></script>
-        <script src="locale/vocabularies/vocabulary_US_en.js"></script>
-        <script src="locale/settings/US_en.js"></script>
-        <!--end of app_US_en.js-->
-
-        <!-- heap: Installation -->
-        <script type="text/javascript">
-            window.heap=window.heap||[],heap.load=function(e,t){window.heap.appid=e,window.heap.config=t=t||{};var r=t.forceSSL||"https:"===document.location.protocol,a=document.createElement("script");a.type="text/javascript",a.async=!0,a.src=(r?"https:":"http:")+"//cdn.heapanalytics.com/js/heap-"+e+".js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(a,n);for(var o=function(e){return function(){heap.push([e].concat(Array.prototype.slice.call(arguments,0)))}},p=["addEventProperties","addUserProperties","clearEventProperties","identify","resetIdentity","removeEventProperty","setEventProperties","track","unsetEventProperty"],c=0;c<p.length;c++)heap[p[c]]=o(p[c])};
-            heap.load("3470378220");
-        </script>
-    </head>
-
-    <body ng-app="amwayProductList" ng-controller="ProductListCtrl" ng-class="{IBOCost: productCostShow=='IBO COST'}" class="ng-scope IBOCost">
-        <div class="slide-animate-container" style="left: 0%;">
-            <!-- ngInclude: template --><div class="slide-animate" ng-include="template" onload="setFilter(filtr); enchanceView();" style=""><div id="container" class="ng-scope">
-
-    <iframe ng-src="http://players.brightcove.net/1437117782001/default_default/index.html?videoId=5114243501001" width="100%" allowfullscreen="" src="http://players.brightcove.net/1437117782001/default_default/index.html?videoId=5114243501001"></iframe>
-
-    <div id="footer" class="footer">
-        <div class="arrow_left_container" ng-click="nextTemplate('splash_screen.html', $event,'backward');">
-            <img src="img/arrow-left.svg">
-        </div>
-    </div>
-
-</div></div>
-            <!-- ngInclude: 'templates/side_menu.html' --><div class="side-menu ng-scope" ng-include="'templates/side_menu.html'" onload="styleSteps(); attachNavigationTracking();" style="left: 100%;"><div id="title_bar" class="ng-scope">
-    <span class="site_title ng-binding">SSD APPLICATION</span>
-    <div class="close_nav" ng-click="close_nav();"><img src="img/close-nav.svg"></div>
-</div>
-<ul class="actions ng-scope">
-    <!--li><a href="#" class="fa-user">Profile</a></li-->
-    <!--li><a href="#" class="fa-sign-out">Log out</a></li-->
-    <!-- ngIf: locale.withCommerce && !user.isAuthenticated -->
-    <!-- ngIf: locale.withCommerce && user.isAuthenticated -->
-    <li class="action" ng-click="show_settings()" data-action="settings"><a href="" class="ng-binding">Settings</a></li>
-    <li class="action start_over" ng-click="init(); nextTemplate('start_page.html',$event,'backward')" data-action="start over"><a href="#" class="ng-binding">Start over</a></li>
-
-    <!--<li class="action"   ng-if="locale.country!='kr' && !locale.isApp && isIOS && locale.layout!='us'" data-action="howto"><a href="videofile://video/{{locale.country}}/video_tut.mp4" ng-click="trackVideoPlayback('video_movie')">{{lang.howto}}</a></li>-->
-    <!-- ngIf: locale.country!='kr' && locale.layout!='us' -->
-    <!-- ngIf: locale.country=='kr' -->
-
-     <!-- ngIf: !locale.isApp && isIOS && locale.country=='ru' -->
-     <!-- ngIf: (!isIOS || locale.isApp) && locale.country=='ru' -->
-
-    <!--<li class="action" ng-if="!locale.isApp"><a href="magloft://action/close-issue">{{lang.exitapplication}} (DPS)</a></li>-->
-    <!-- ngIf: !locale.isApp --><li class="action ng-scope" ng-if="!locale.isApp"><a href="magloft://action/close-issue" class="ng-binding">Exit application</a></li><!-- end ngIf: !locale.isApp -->
-
-    <li class="step" ng-class="{active: template.match('\/splash_screen\.html$')}" ng-click="nextTemplate('splash_screen.html',$event,'backward')" data-action="home"><a href="#" id="li0" class="ng-binding">Home</a></li>
-    <li class="step" ng-class="{active: template.match('\/start_page\.html$')}" ng-click="home()" data-action="start_page"><a href="#" id="li1" class="ng-binding">Categories</a></li>
-    <li class="step" ng-class="{active: template.match('\/catalogue\.html$')}" ng-click="getTemplate(filtr)" data-action="products"><a href="#" id="li2" class="ng-binding">Products</a></li>
-    <li class="step" ng-class="{active: template.match('\/product_summary\.html$')}" ng-click="!stepFlag['product_summary'] || (nextTemplate('product_summary.html',$event,'backward'))" data-action="product_summary"><a href="#" id="li3" class="ng-binding disabled">Daily use</a></li>
-    <li class="step" ng-class="{active: template.match('\/days_in_month\.html$')}" ng-click="!stepFlag['days_in_month'] || (nextTemplate('days_in_month.html',$event,'backward'))" data-action="days_in_month"><a href="#" id="li4" class="ng-binding disabled">Monthly Use</a></li>
-    <li class="step" ng-class="{active: template.match('\/customers\.html$')}" ng-click="!stepFlag['customers'] || (nextTemplate('customers.html',$event,'backward'))" data-action="customers"><a href="#" id="li5" class="ng-binding disabled">Customers</a></li>
-    <li class="step" ng-class="{active: template.match('\/duplicate_you\.html$')}" ng-click="!stepFlag['duplicate_you'] || (nextTemplate('duplicate_you.html',$event,'backward'))" data-action="duplicate_you"><a href="#" id="li6" class="ng-binding disabled">Duplicate You</a></li>
-    <li class="step" ng-class="{active: template.match('\/duplicate_them\.html$')}" ng-click="!stepFlag['duplicate_them'] || (nextTemplate('duplicate_them.html',$event,'backward'))" data-action="duplicate_them"><a href="#" id="li7" class="ng-binding disabled">Duplicate Them</a></li>
-    <li class="step" ng-class="{active: template.match('\/summary\.html$')}" ng-click="!stepFlag['summary'] || (nextTemplate('summary.html',$event,'backward'))" data-action="bonus_calculation_summary"><a href="#" id="li8" class="ng-binding disabled">Your Summary</a></li>
-    <!-- ngIf: locale.withCommerce -->
-
-</ul></div>
-            <!-- ngInclude: 'templates/settings.html' --><div class="settings-panel ng-scope" id="app-settings" ng-include="'templates/settings.html'" onload="getSettings(); addSettingListener();" style="left: 100%;"><div id="container" class="settings-screen ng-scope surfing-theme" ng-class="theme">
-    <div id="title_bar">
-        <span class="site_title ng-binding">SETTINGS</span>
-        <div class="close_nav" ng-click="close_settings();"><img src="img/close-nav.svg"></div>
-    </div>
-
-
-    <div id="settings_screen_container">
-
-        <div class="settings-wrapper">
-            <!-- ngIf: locale.multilanguage -->
-
-            <!-- ngIf: !locale.singlePriceModel --><div ng-if="!locale.singlePriceModel" class="setting product_cost ng-scope" ng-click="showProductOptions();">
-                <div class="left_cell ng-binding">Product cost</div>
-                <div class="right_cell ng-binding">IBO Cost <i ng-class="{'fa fa-chevron-right':!productChevronRotate,
-                'fa fa-chevron-down':productChevronRotate}" class="fa fa-chevron-right"></i></div>
-            </div><!-- end ngIf: !locale.singlePriceModel -->
-
-            <!-- ngIf: !locale.singlePriceModel --><div ng-if="!locale.singlePriceModel" class="product_cost_option ng-scope">
-                <div class="radio1 ng-binding" ng-click="changeProductCostUnit('IBO COST')" ng-class="{active: productCostShow=='IBO COST', inactive:productCostShow!='IBO COST'}">IBO Cost
-                </div>
-                <div class="radio2 ng-binding inactive" ng-click="changeProductCostUnit('Suggested Retail')" ng-class="{active: productCostShow=='Suggested Retail', inactive:productCostShow=='IBO COST'}">Suggested Retail
-                </div>
-            </div><!-- end ngIf: !locale.singlePriceModel -->
-
-            <!-- ngIf: !locale.singlePriceModel && locale.country!='ru' && locale.country!='kz' --><div ng-if="!locale.singlePriceModel &amp;&amp; locale.country!='ru' &amp;&amp; locale.country!='kz'" class="setting retail_markup ng-scope">
-                <div class="left_cell ng-binding">Retail mark-up</div>
-
-                <div class="right_cell">
-                    <div class="switch_bkg id1" ng-click="toggleSwitch($event);">
-                        <div class="switch"></div>
-                    </div>
-                </div>
-            </div><!-- end ngIf: !locale.singlePriceModel && locale.country!='ru' && locale.country!='kz' -->
-
-            <!-- ngIf: !locale.noPVSwitch --><div class="setting show_PV ng-scope" ng-if="!locale.noPVSwitch">
-                <div class="left_cell ng-binding">Show PV</div>
-
-                <div class="right_cell">
-                    <div class="switch_bkg id2" ng-click="toggleSwitch($event);">
-                        <div class="switch"></div>
-                    </div>
-                </div>
-            </div><!-- end ngIf: !locale.noPVSwitch -->
-
-
-            <div class="setting change_background" ng-click="showBackgroundOptions();">
-                <div class="left_cell ng-binding">Change background</div>
-
-                <div class="right_cell">
-                    <i ng-class="{'fa fa-chevron-right':!backgroundChevronRotate,
-                    'fa fa-chevron-down':backgroundChevronRotate}" class="fa fa-chevron-right"></i>
-                </div>
-            </div>
-
-            <div class="change_background_option" ng-style="getThemesOpenedByDefault()" style="display: none;">
-                <div class="background-teaser" id="surfer" ng-click="changeBackground($event)">
-                    <img ng-src="img/themes/surfer/teaser.jpg" alt="" src="img/themes/surfer/teaser.jpg">
-                </div>
-                <div class="background-teaser" id="surfing" ng-click="changeBackground($event)">
-                    <img ng-src="img/themes/surfing/teaser.jpg" alt="" src="img/themes/surfing/teaser.jpg">
-                </div>
-                <div class="background-teaser" id="paddling" ng-click="changeBackground($event)">
-                    <img ng-src="img/themes/paddling/teaser.jpg" alt="" src="img/themes/paddling/teaser.jpg">
-                </div>
-                <div class="background-teaser" id="party" ng-click="changeBackground($event)">
-                    <img ng-src="img/themes/party/teaser.jpg" alt="" src="img/themes/party/teaser.jpg">
-                </div>
-                <div class="background-teaser" id="runner" ng-click="changeBackground($event)">
-                    <img ng-src="img/themes/runner/teaser.jpg" alt="" src="img/themes/runner/teaser.jpg">
-                </div>
-                <div class="background-teaser" id="sunset" ng-click="changeBackground($event)">
-                    <img ng-src="img/themes/sunset/teaser.jpg" alt="" src="img/themes/sunset/teaser.jpg">
-                </div>
-                <div class="background-teaser" id="waveriding" ng-click="changeBackground($event)">
-                    <img ng-src="img/themes/waveriding/teaser.jpg" alt="" src="img/themes/waveriding/teaser.jpg">
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="version_number ng-scope">ver. 3.1.0</div>
-
-<div class="done_button footer ng-scope" ng-click="close_settings();">
-    <div class="arrow_left_container ng-binding">
-        <img src="img/arrow-left.svg"> BACK
-    </div>
-</div></div>
-            <!-- ngInclude: 'templates/user-settings.html' --><div class="settings-panel ng-scope" id="user-settings" ng-include="'templates/user-settings.html'" onload="initSettingsPanel(); getUserSettings(); addUserSettingListener();" style="left: 100%;"><div id="container" ng-class="theme" class="ng-scope surfing-theme">
-    <div id="title_bar">
-        <span class="site_title settings ng-binding">USER SETTINGS</span>
-        <div class="close_nav" ng-click="close_settings();"><img src="img/close-nav.svg"></div>
-    </div>
-
-    <div id="screen_container" style="height:90%;">
-
-        <!-- ngIf: !userIsAuthenticated --><div ng-if="!userIsAuthenticated" class="setting log_in ng-scope" ng-click="expandLogin();">
-            <h1 class="ng-binding">Log in</h1>
-            <div id="authErrorMessage" class="error-message">
-                <div class="disclousure_h1 ng-binding">Login failed!</div>
-                <div class="disclouseure_text ng-binding">Your login or password are incorrect, please correct your user settings and try again.</div>
-            </div>
-            <div id="connectionErrorMessage" class="error-message">
-                <div class="disclousure_h1 ng-binding">Connection error!</div>
-                <div class="disclouseure_text ng-binding">An error occured while trying to connect to Amway Online. Please try again.</div>
-            </div>
-            <div>
-                <div class="header ng-binding">User name</div>
-                <input type="text" ng-model="user.name" class="ng-pristine ng-untouched ng-valid">
-                <div class="header ng-binding">Password</div>
-                <input type="password" ng-model="user.password" class="ng-pristine ng-untouched ng-valid">
-                <button ng-click="userLogin()" class="ng-binding">OK</button>
-            </div>
-            <div class="login-teaser ng-binding">
-                Use your ABO details to log in to folio. Once logged in, user can order products directly from folio with no necessity of additional login action on Amway Online. User is also able to keep his simulation session on a device even if he close folio and then open it again. Log in to folio and make your shopping journey as easy as it can be!
-            </div>
-        </div><!-- end ngIf: !userIsAuthenticated -->
-    </div>
-
-</div>
-
-<div class="done_button footer ng-binding ng-scope" ng-click="close_settings();">
-    <div class="arrow_left_container">
-        <img src="img/arrow-left.svg">
-    </div>
-    BACK
-</div></div>
-        </div>
-        <!-- iPhone 6 support -->
-        <!--<script src="js/overscrollfix.js"></script>-->
-        <script src="js/vendor/tokenizer.js"></script>
-        <script src="js/vendor/parser.js"></script>
-        <script src="js/vendor/vminpoly.js"></script>
+    var deeplinking_url = "amwayrc://";
+    $(document).ready(function(){
+        call_me_new(deeplinking_url);
+    });
     
-
-    <!--
-    Aby zrobić zrzuty z długich odsłon należy zmienić UserAgent na "printscreen"
-    i użyć pluginu "Awesome screenshot"
-
-    <link rel="stylesheet" href="css/ssd_print-screen.css"/>
-    <script src="js/ssd_print-screen.js"></script>
-    -->
-
-</body></html>
+    var call_me_new = function(deeplinking_url){
+    
+        if(deeplinking_url!=''){
+            var fallbackUrl ='http://scootsy.com/';
+            var iframe = document.createElement("iframe");
+            var nativeSchemaUrl = deeplinking_url;
+            console.log(nativeSchemaUrl);
+    
+            iframe.id = "app_call_frame";
+            iframe.style.border = "none";
+            iframe.style.width = "1px";
+            iframe.style.height = "1px";
+            iframe.onload = function () {
+                document.location = nativeSchemaUrl;
+            };
+            iframe.src = nativeSchemaUrl; //iOS app schema url
+            window.onload = function(){
+                document.body.appendChild(iframe);
+            }
+    
+            //IF the App is not install then it will remain on the same page.If you wish to send the use to other page then uncomment the below code and send a time interval for the redirect.
+            /*
+            setTimeout(function(){
+                console.log('Iframe Removed...');
+                document.getElementById("app_call_frame").remove();
+    
+            window.location = fallbackUrl; //fallback url
+            },5000);*/
+        }
+    };
+    </script>
