@@ -1,0 +1,35 @@
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appID": "J4D4LF5DQP.com.americas.amway.ulinktest",
+        "paths": [ "RA*" ]
+      },
+      {
+        "appID": "J4D4LF5DQP.com.amway.resourcecenter",
+        "paths": [ "RA*" ]
+      },
+      {
+        "appID": "J34PF789R7.com.amway.konyaa",
+        "paths": [ "RA*" ]
+      },
+      {
+        "appID": "9YDD4NP3D3.com.kps.qcoe",
+        "paths": [ "RA*" ]
+      },
+      {
+        "appID": "WV3KG35563.com.amway.qa.resourcecenter",
+        "paths": [ "RA*" ]
+      },
+      {
+        "appID": "J4D4LF5DQP.com.amway.americas.NA.businesscenter.DEV",
+        "paths": [ "PR*" ]
+      },
+      {
+        "appID": "J4D4LF5DQP.com.amway.americas.NA.businesscenter",
+        "paths": [ "PR*" ]
+      }
+    ]
+  }
+}
