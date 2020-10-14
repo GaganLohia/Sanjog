@@ -1,7 +1,54 @@
 {
-  "_id": "588b396851bf2abba7a7f2ef",
-  "appId": "shopify",
-  "version": "1.0",
+  "_id": "55a0f47735d84029cdc3eb0e",
+  "name": "Shopify",
+  "description": "Create your online store and sell online with Shopify. Manage inventory, market products online and receive payments.",
+  "logo": "assets/images/logos/shopify.png",
+  "auth": {
+    "type": "OAuth2",
+    "authParams": {
+      "site": "https://www.shopify.com",
+      "clientID": "95eb9bb6cc2cd8f2dfc107afabd2184e",
+      "clientSecret": "3cfe99b906cadcea853f5d2c93cce50a",
+      "redirect_uri": "https://api-dev.automate.io/auth/shopify/callback",
+      "tokenPath": "/admin/oauth/access_token",
+      "authorizationPath": "/admin/oauth/authorize"
+    },
+    "authStrategy": "function authStrategy(hashedParams, hashedUtils, callback) {\n\n    var retObj      = {status: \"ERROR\"};\n    var scope       = 'read_orders,write_orders,read_customers,write_customers,read_products,write_products,read_content,write_content,read_fulfillments,write_inventory';\n    var authParams;\n    var oauth2;\n    var path;\n    var fetchedParams\n    var authorization_uri;\n\n    // if no oauth2 util present or appInfo\n    if (!(hashedUtils || {}).oauth2 && !(hashedParams || {}).appInfo) {\n      retObj.error = { code: 'ERROR_MISSING_PARAM', message: 'authStrategy: Missing simple-oauth2 object in the hashedUtils or apInfo in hashParams' }\n      callback(retObj)\n      return;\n\n    } else if (!(hashedParams['appInfo']['auth'] || {}).authParams) {\n      retObj.error = { code: 'ERROR_MISSING_PARAM', message: \"authStrategy: Missing authParams in the auth\" };\n      callback(retObj);\n      return;\n    }\n\n    // fetching the authParams and user input\n    authParams      = hashedParams['appInfo']['auth']['authParams'];\n    fetchedParams   = JSON.parse(hashedParams['params']);\n\n    // checking if any authParam is missing\n    if (!authParams['redirect_uri'] || !authParams['authorizationPath'] || !authParams['clientID']) {\n        retObj.error = {code: 'ERROR_MISSING_PARAM', message: \"authStrategy: Missing parameters in authParams\" };\n        callback(retObj);\n        return;\n\n    } else {\n        // creating a oauth2 object\n        let site = 'https://' + fetchedParams['shopName'] + '.myshopify.com'\n        if(fetchedParams['shop']){\n          site = `https://${fetchedParams['shop']}`\n        }\n        oauth2 = hashedUtils.oauth2({\n          clientID: authParams['clientID'] || fetchedParams['clientID'],\n          site: site,\n          authorizationPath: authParams['authorizationPath'] || fetchedParams['authorizationPath']\n        });\n\n        // getting authorizeURL\n        authorization_uri = oauth2.authCode.authorizeURL({\n          client_id   : authParams['clientID'] || fetchedParams['clientID'],\n          scope       : scope,\n          redirect_uri: authParams['redirect_uri'] || fetchedParams['redirect_uri']\n\n        });\n\n        // success return object to the callback\n        retObj.status = 'SUCCESS';\n        retObj.data = { authorization_uri: authorization_uri };\n        callback(retObj);\n    }\n}",
+    "authCallBack": "function authCallback(hashedParams, hashedUtils, callback) {\n\n    var retObj  = {status: \"ERROR\"};\n    var params  = [];\n    var appInfo;\n    var oauth2;\n    var authParams;\n    var code;\n\n    // if queryobj not present in the hashedParam\n    \n    if (!((hashedParams || {})).queryObj || !(hashedUtils || {}).oauth2) {\n        retObj.error = {\n            code    : 'ERROR_MISSING_PARAM', \n            message : 'authCallback: Missing query parameters in the hashedParams or simple-oauth util' \n        };\n        callback(retObj);\n        return;\n\n    }\n\n    // fetching the queryObj\n    var queryObj = hashedParams.queryObj;\n    \n    // if code in queryObj is missing\n    if (!queryObj.code) {\n        retObj.error = { \n            code    : 'ERROR_MISSING_PARAM', \n            message : 'authCallback: Missing code in the queryObj'\n        };\n        callback(retObj);\n        return;\n    }\n\n    // fetching the app\n    authParams  =   hashedParams['appInfo']['auth']['authParams'];\n    oauth2 = hashedUtils.oauth2({\n        clientID    : authParams['clientID'],\n        clientSecret: authParams['clientSecret'],\n        site        : 'https://' + queryObj['shop'],\n        tokenPath   : authParams['tokenPath']\n    });\n\n    // fetching code\n    code = queryObj.code;\n\n    oauth2.authCode.getToken({\n        code         : code,\n        client_id    : authParams['clientID'],\n        client_secret: authParams['clientSecret'],\n    }, saveToken, this);\n\n    // to save the token and shop name\n    function saveToken(ERROR, result) {\n        if (ERROR) {\n            retObj.error = {\n                 code   : 'ERROR_AUTH',\n                 message: 'Access Token ERROR ' + ERROR \n            };\n            callback(retObj);\n            return;\n        } else {\n            let identifier = ''\n            if (queryObj['shop']) {\n                const splitArr = queryObj['shop'].split('.')\n                if (splitArr[0]) {\n                    identifier = splitArr[0]\n                }\n            }\n            if (result && result['access_token']) {\n                params.push({ 'id': 'access_token', value: result['access_token'] });\n                params.push({ 'id': 'shop' , value: queryObj['shop']});\n                params.push({ id: 'identifier', value: identifier })\n                retObj.status = 'SUCCESS';\n                retObj.data   = { oauth2Info: result, params: params };\n\n          \n                callback(retObj);\n                return;\n            } else {\n                retObj.error = { code: 'ERROR_AUTH', message: 'Cannot retrieve all the required tokens ' };\n                callback(retObj);\n                return;\n            }\n        }\n    }\n}",
+    "authDeleteRequest": "function authDeleteRequest(params, utils, callback) {\n  const retObj = {}\n  if (!params || !params.userApp || !params.appInfo) {\n    retObj.status = 'ERROR'\n    retObj.error = {\n      message: 'userapp or appinfo is missing from params'\n    }\n    return callback(retObj)\n  }\n\n  const fetchedParams = params.userApp.fetchAuthParams(params.appInfo)\n\n  if (!fetchedParams || !fetchedParams.access_token) {\n    retObj.status = 'ERROR'\n    retObj.error = {\n      message: 'auth params are missing'\n    }\n    return callback(retObj)\n  }\n\n  const { access_token } = fetchedParams\n\n  const shopUrlObj = params.userApp.params.find(param => param.id === 'shop')\n\n  if (!shopUrlObj || !shopUrlObj.value) {\n    retObj.status = 'ERROR'\n    retObj.error = {\n      message: 'shop url is missing from userapp'\n    }\n    return callback(retObj)\n  }\n\n  const shopUrl = shopUrlObj.value\n\n  const url = `https://${shopUrl}/admin/api_permissions/current.json`\n\n  const options = {\n    url,\n    method: 'DELETE',\n    headers: {\n      'X-Shopify-Access-Token': access_token,\n      'Content-Type': 'application/json',\n      'Accept': 'application/json'\n    },\n    json: true\n  }\n\n  retObj.status = 'SUCCESS'\n  retObj.data = { options }\n\n  return callback(retObj)\n}",
+    "authDeleteParse": "function authDeleteParse(params, utils, callback) {\n  const retObj = {}\n\n  if (!params || !params.response || !params.body) {\n    retObj.status = \"ERROR\"\n    retObj.error = {\n      message: 'response or body is missing from params',\n      code: 'ERROR_MISSING_PARAM'\n    }\n    return callback(retObj)\n  }\n\n  const { response, body } = params\n\n  if (response.statusCode === 200) {\n    retObj.status = 'SUCCESS'\n  } else {\n    retObj.status = \"ERROR\"\n    const errors = body.errors || '';\n    let errorMessage = '';\n\n    //genrateErrorMessage\n    if (errors) {\n      if (typeof errors == 'string')\n        errorMessage = errors;\n      else {\n        Object.keys(errors).forEach(function (key) {\n          errorMessage += key + ': ';\n          if (errors[key] && errors[key] instanceof Array)\n            errorMessage += errors[key].join(',');\n          else if (typeof errors[key] == 'string')\n            errorMessage += errors[key];\n          else\n            errorMessage += errors[key];\n          errorMessage += ', ';\n        });\n      }\n    }\n\n    if (response.statusCode === 401) {\n      retObj.error = {\n        code: 'ERROR_AUTH',\n        message: 'Unauthorized. Did you uninstall Automate.io in your Shopify account?'\n      }\n      retObj.errorCode = 'ERROR_AUTH'\n    } else if (response.statusCode === 429) {\n      retObj.error = {\n        code: 'ERROR_RATE_LIMIT',\n        message: errorMessage ? errorMessage : 'Too many requests, request rate limit exceeded'\n      }\n      retObj.errorCode = 'ERROR_RATE_LIMIT'\n    } else {\n      retObj.error = {\n        code: 'ERROR_UNKNOWN',\n        message: errorMessage ? errorMessage : `Error occured with status code ${response.statusCode || ''}`\n      }\n    }\n  }\n  return callback(retObj)\n}",
+    "authObjectRequest": "function authObjectRequest(params, utils, callback) {\n\n    var retObj          = {status: \"ERROR\"};\n    var url             = '/admin/api/2019-04/shop.json';\n    var options;\n    if (!params) {\n        retObj.status = 'ERROR'\n        retObj.error = {\n          message: 'params are missing',\n          code: \"ERROR_MISSING_PARAMS\"\n        }\n        return callback(retObj)\n      }\n    \n  \n      // fetch the auth params for given userapp\n      let authData = params['authCallbackData']\n\n      let access_token = authData.params && authData.params.find(p => p.id === 'access_token') ? authData.params.find(p => p.id === 'access_token') : null\n      let shopUrl = authData.params && authData.params.find(p => p.id === 'shop') ? authData.params.find(p => p.id === 'shop') : null\n      let identifier = authData.params && authData.params.find(p => p.id === 'identifier') ? authData.params.find(p => p.id === 'identifier') : null\n\n      var oauthParams = [access_token,shopUrl,identifier]\n        \n      access_token = access_token && access_token.value ? access_token.value : null\n      shopUrl = shopUrl && shopUrl.value ? shopUrl.value : null\n    \n      \n      // if the access token not available than return with error object\n      if (!access_token || !shopUrl) {\n          // checking for access token\n          retObj['error']             = {};\n          retObj['error']['code']     = 'ERROR_MISSING_PARAM';\n          retObj['error']['message']  = \"Missing access token in the fetched auth params\"; \n          callback(retObj);\n          return;\n  \n      }  else {\n          // compiling the options for searching prodcut for the given title of product\n          options = {\n              method: 'GET',\n              headers: {\n                  'X-Shopify-Access-Token': access_token,\n                  'Content-Type'          : 'application/json',\n              },\n              url: 'https://' + shopUrl + url,\n              json: true\n          }\n\n          retObj.step = {oauthParams : oauthParams}\n          retObj['status']        = \"SUCCESS\";\n          retObj['data']          = { options: options };\n      } \n    callback(retObj);\n  }",
+    "authObjectParse": "function authObjectParse(params, utils, callback) {\n    let retObj = {}\n    let response = params['response']\n    let authData = params['authCallbackData']\n    let oauthParams = []\n    let body\n  \n    // Validate User params\n    if (!response || !response.body) {\n  \n      retObj['status'] = 'ERROR'\n      retObj['error'] = {}\n      retObj['error']['code'] = 'ERROR_MISSING_PARAM'\n      retObj['error']['message'] = 'Error: Missing body.'\n  \n    } else {\n  \n      body = response.body\n      oauthParams = params.step ? params.step.oauthParams : []\n      if (body && body.shop) {\n        if (body && body.shop && body.shop.name && body.shop.email) {\n          retObj.status = 'SUCCESS'\n          retObj.data = {\n            oauth2Info: authData.oauth2Info,\n            params: oauthParams\n          }\n          retObj.user = {\n            name: body.shop.name ,\n            email: body.shop.email\n          }\n        } else {\n          retObj['status'] = 'ERROR'\n          retObj['message'] = 'Missing user name and email from body in authentication flow'\n          retObj['errorCode'] = 'ERROR_UNKOWN'\n        }\n  \n      } \n    }\n  \n    return callback(retObj)\n  }\n  ",
+    "authRedirectURL": "/landing/shopify",
+    "params": [
+      {
+        "fixedValueSource": [
+          
+        ],
+        "inputType": "input",
+        "name": "Shop Name",
+        "id": "shopName",
+        "domain": ".myshopify.com",
+        "protocol": "https://",
+        "type": "Subdomain",
+        "required": true,
+        "description": "Name of your shop on shopify. Example  https://{shopname}.myshopify.com/",
+        "input": true,
+        "persist": true
+      }
+    ],
+    "response": [
+      {
+        "id": "access_token"
+      },
+      {
+        "id": "shop"
+      },
+      {
+        "id": "identifier"
+      }
+    ]
+  },
   "triggers": [
     {
       "webhookType": "workflow",
@@ -16,7 +63,7 @@
       "source": {
         "type": "poll",
         "initialPollRequest": "function initialPollRequest(hashedParams, utils, callback) {\n  \n  // storing the time milliseconds\n  var TimeStamp = Date.now();\n  var retObj    = {};\n\n  retObj['status']           = \"SUCCESS\";\n  retObj['data']             = {};\n  retObj['data']['pollData'] = {\n      status: \"SUCCESS\",\n      data: {\n        time: TimeStamp\n      }\n  };\n\n  callback(retObj);\n}",
-        "initialPollParse": "function (){ }",
+        "initialPollParse": "function(){ }",
         "pollRequest": "function pollRequest(params, utils, callback) {\n\n    var retObj             = {status: \"ERROR\"};\n    var url                = \"/admin/checkouts.json\";\n    var currentTimeMS      = Date.now();\n    var millisecondsInHour = 3600000;\n    var minDate;\n    var maxDate;\n    var shopUrl;\n    var fetchedAuthParams;\n    var userInputHours;\n    var workflow;\n    var pollDate;\n    var time;\n    var options;\n\n    // checking if any input param is missing\n    if (!params || !params['appinfo'] || !params['userapp'] || !params['workflow']) {\n        retObj['error']             = {};\n        retObj['error']['code']     = \"ERROR_MISSING_PARAM\";\n        retObj['error']['message']  = \"PollRequest: Input parameters are missing\";\n        callback(retObj);\n        return;\n    }\n\n    // Fetch Auth Params\n    fetchedAuthParams = params.userapp.fetchAuthParams(params.appinfo);\n    // fetching the workflow for pollData\n    workflow          = params['workflow'];\n    // fetching the shop url\n    shopUrl =  params['userapp']['params'].find(p => p.id === 'shop');\n    // fetching the user input hours\n    if(workflow && workflow['trigger'] && workflow['trigger']['params'])\n        userInputHours = workflow['trigger']['params'].find(p =>p.id === 'age');\n\n    // if the auth params are missing, here access_token\n    if (!fetchedAuthParams || !fetchedAuthParams['access_token'] || !shopUrl || !shopUrl.value) {\n        retObj['error']             = {};\n        retObj['error']['code']     = \"ERROR_MISSING_PARAM\";\n        retObj['error']['message']  = \"PollRequest: Missing the auth params\";\n\n    }else if (!workflow['trigger'] || !workflow['trigger']['pollData'] \n                                   || !workflow['trigger']['pollData']['data']['time']) {\n        // in case the workflow related pollData is missing\n        retObj['error']             = {};\n        retObj['error']['code']     = \"ERORR_MISSING_PARAM\";\n        retObj['error']['message']  = \"PollRequest: Missing the workflow poll data\";\n\n    } else if( !userInputHours || !userInputHours.value){\n\n        // in case the workflow params are missing\n        retObj['error']             = {};\n        retObj['error']['code']     = \"ERORR_MISSING_PARAM\";\n        retObj['error']['message']  = \"PollRequest: Missing the workflow trigger params\";\n\n    } else {\n\n        // when everything is fine, creating request data\n        time    = workflow['trigger']['pollData']['data']['time'];\n        // calculating the after time \n        minDate = new Date(time - userInputHours.value * millisecondsInHour).toISOString();\n        // calculating the before time\n        maxDate = new Date(currentTimeMS - userInputHours.value * millisecondsInHour).toISOString();\n    \n        // compiling the options\n        options =   {\n            method : 'GET',\n            url    : 'https://' + shopUrl.value + url,\n            json   : true,\n            headers:   {\n                'X-Shopify-Access-Token' : fetchedAuthParams['access_token'],\n                'Content-Type'           : 'application/json'\n            },\n            qs   : {\"created_at_min\": minDate, \"created_at_max\": maxDate}\n        }\n        retObj['status'] = \"SUCCESS\";\n        retObj['data']   = { options };\n        retObj['step']   = {\"value\" : currentTimeMS};\n    }\n    callback(retObj);\n}",
         "pollParse": "function pollParse(params, utils, callback) {\n\n    var abandonedCheckouts = [];\n    var retObj = { status: \"ERROR\" };\n    var skipFields = ['note_attributes', 'token', 'cart_token', 'default', 'shipping_lines', 'applied_discounts', 'tax_lines', 'discount_codes', 'tax_lines',];\n    var customerData = {};\n    var checkoutData = {};\n    var checkoutObj = {};\n    var lineItemPrefix;\n    var tempcheckoutObj;\n    var abandCheck;\n    var pollRequestTime;\n    var response;\n    var parsedBody;\n    var errorMessage;\n    var errors;\n\n    // if any required param is missing from the input\n    if (!params || !params['response'] || !params['body'] || !utils || !utils.libDate) {\n        retObj['error'] = {};\n        retObj['error']['code'] = \"ERROR_MISSING_PARAM\";\n        retObj['error']['message'] = \"PollParse: Missing response, body or libDate util\";\n        callback(retObj);\n        return;\n    }\n    else {\n        pollRequestTime = params['step'] && params['step']['value'] ? params['step']['value'] : Date.now();\n        response = params['response'];\n        parsedBody = params['body'];\n\n        // if the request is successful\n        if (response['statusCode'] && response['statusCode'] === 200) {\n\n            if (parsedBody['checkouts'].length) {\n                // when there are new entries\n\n                parsedBody['checkouts'].forEach(function (checkout, index) {\n                    tempcheckoutObj = {};\n\n                    Object.keys(checkout).forEach(function (field) {\n                        if (field === \"customer\") {\n\n                            Object.keys(checkout[field]).forEach(function (prop) {\n                                if (prop === \"default_address\") {\n                                    Object.keys(checkout[field][prop]).forEach(function (p) {\n                                        customerData[field + '_address_' + p] = checkout[field][prop][p] ? checkout[field][prop][p] : '';\n                                    }, this);\n                                } else {\n                                    if (prop === 'created_at' || prop === 'updated_at')\n                                        customerData[field + '_' + prop] = checkout[field][prop] ? utils.libDate.parseJSDateTimeToStandardString(checkout[field][prop]) : '';\n                                    else\n                                        customerData[field + '_' + prop] = checkout[field][prop] ? checkout[field][prop] : '';\n                                }\n                            }, this);\n\n                        } else if (field === \"line_items\") {\n\n                            //creating comma separated list of all line item names and ids\n\n                            let accumulated = null\n\n                            accumulated = checkout[field].reduce((acc, value) => {\n                                acc.line_item_ids.push(value.id ? value.id : '')\n                                acc.line_item_names.push(value.name ? value.name : '')\n                                acc.line_item_product_codes.push(value.product_id ? value.product_id : '')\n                                acc.line_item_titles.push(value.title ? value.title : '')\n                                acc.line_item_variant_ids.push(value.variant_id ? value.variant_id : '')\n                                acc.line_item_variant_titles.push(value.variant_title ? value.variant_title : '')\n                                acc.line_item_quantities.push(value.quantity ? value.quantity : '')\n                                acc.line_item_prices.push(value.price ? value.price : '')\n                                acc.line_item_skus.push(value.sku ? value.sku : '')\n                                acc.line_item_weights.push(value.grams ? value.grams : '')\n\n                                return acc\n                            }, {\n                                    line_item_ids: [],\n                                    line_item_names: [],\n                                    line_item_product_codes: [],\n                                    line_item_titles: [],\n                                    line_item_variant_ids: [],\n                                    line_item_variant_titles: [],\n                                    line_item_quantities: [],\n                                    line_item_prices: [],\n                                    line_item_skus: [],\n                                    line_item_weights: []\n                                }\n                            )\n\n                            Object.keys(accumulated).forEach(prop => {\n                                let fld = prop\n                                let data = accumulated[prop]\n\n                                if (data && data.length) {\n                                    tempcheckoutObj[fld] = data.toString()\n                                }\n                            })\n\n                            // var line_item_names = \"\";\n                            // var line_item_product_codes = \"\";\n\n                            // checkout[field].forEach(function(item){\n                            //     line_item_product_codes += item.product_id + \",\";\n                            //     line_item_names += item.name + \",\";\n                            // });\n\n                            // if (line_item_product_codes && line_item_names) {\n                            //     tempcheckoutObj['line_item_product_codes'] = line_item_product_codes.slice(0, line_item_product_codes.length - 1);\n                            //     tempcheckoutObj['line_item_names'] = line_item_names.slice(0, line_item_names.length - 1);    \n                            // }\n\n                            checkout[field].every(function (item, innerIndex) {\n                                lineItemPrefix = index === 0 ? 'first_' : index === 1 ? 'second_' : 'third_';\n\n                                // only fetching top 3 line items\n                                if (innerIndex === 2)\n                                    return false;\n\n                                Object.keys(item).forEach(function (el) {\n                                    if (skipFields.indexOf(el) < 0)\n                                        tempcheckoutObj[lineItemPrefix + 'line_Item_' + el] = item[el] ? item[el] : '';\n                                }, this);\n\n                            }, this);\n\n                        } else if (field === \"shipping_address\" || field === \"billing_address\") {\n\n                            Object.keys(checkout[field]).forEach(function (prop) {\n                                tempcheckoutObj[field + '_' + prop] = checkout[field][prop] ? checkout[field][prop] : '';\n                            }, this);\n\n                        } else if (skipFields.indexOf(field) < 0) {\n                            if (field === 'created_at' || field === 'updated_at')\n                                checkoutData[field] = checkout[field] ? utils.libDate.parseJSDateTimeToStandardString(checkout[field]) : '';\n                            else\n                                checkoutData[field] = checkout[field] ? checkout[field] : '';\n                        }\n                    }, this);\n\n                    // reordering the JSON data\n                    [checkoutData, customerData, tempcheckoutObj].forEach(function (jsonObj) {\n                        Object.keys(jsonObj).forEach(function (key) {\n                            checkoutObj[key] = jsonObj[key];\n                        }, this);\n                    }, this);\n\n                    abandCheck = {};\n                    abandCheck['response'] = { \"params\": checkoutObj };\n                    abandonedCheckouts.push({ \"newObject\": abandCheck, \"hash\": { \"id\": checkout.id } });\n\n                }, this);\n\n                retObj['status'] = \"SUCCESS\";\n                retObj['data'] = {\n                    pollData: {\n                        status: 'SUCCESS',\n                        data: {\n                            time: pollRequestTime ? pollRequestTime : null\n                        }\n                    },\n                    objects: abandonedCheckouts\n                };\n            }\n            else {\n                // in case of no new lead found\t\n                retObj['status'] = \"SUCCESS\";\n                retObj['data'] = {};\n                retObj['data']['objects'] = [];\n                retObj['data']['pollData'] = {\n                    status: \"SUCCESS\",\n                    data: {\n                        time: pollRequestTime ? pollRequestTime : null\n                    }\n                };\n            }\n\n        } else {\n            // when error data present, flattening the object\n            errors = params['body']['errors'];\n            if (errors) {\n                errorMessage = '';\n                if (typeof errors == 'string')\n                    errorMessage = errors;\n                else {\n                    Object.keys(errors).forEach(function (key) {\n                        errorMessage += key + ': ';\n                        if (errors[key] && errors[key] instanceof Array)\n                            errorMessage += errors[key].join(',');\n                        else if (typeof errors[key] == 'string')\n                            errorMessage += errors[key];\n                        else\n                            errorMessage += errors[key];\n                        errorMessage += ', ';\n                    });\n                }\n            }\n            if (response['statusCode'] && response['statusCode'] == '401') {\n                // when oauth errors occurs because of wrong access token\n                retObj['error'] = {\n                    code: 'ERROR_AUTH',\n                    message: 'Unauthorized. Did you uninstall Automate.io in your Shopify account?'\n                };\n\n            } else if (response['statusCode'] && response['statusCode'] == '429') {\n                // when rate limit occurs \n                retObj['error'] = {\n                    code: 'ERROR_RATE_LIMIT',\n                    message: errorMessage ? errorMessage : 'Too many requests, request rate limit exceeded'\n                };\n\n            } else if (response['statusCode']) {\n                // for all the other errors\n                retObj['error'] = {\n                    code: 'ERROR_UNKNOWN',\n                    message: errorMessage ? errorMessage : 'Unknown error occurred with status code' + response['statusCode']\n                };\n            }\n        }\n    }\n    callback(retObj);\n}"
       },
@@ -7292,7 +7339,7 @@
       "dynamicResponseFieldsDependsOn": [
         
       ],
-      "_id": "5e4e54f48608ad286b4e5264",
+      "_id": "5f869b2d935be97ae031a79c",
       "id": "add-blog-entry",
       "name": "Add Blog Entry",
       "description": "Creates a new Blog Post",
@@ -7409,7 +7456,7 @@
       "dynamicResponseFieldsDependsOn": [
         
       ],
-      "_id": "5e4e54f48608ad286b4e5263",
+      "_id": "5f869b2d935be97ae031a79b",
       "name": "Add or Update Customer",
       "id": "add-customer",
       "description": "Creates a new Customer or Updates an existing Customer",
@@ -7750,7 +7797,7 @@
       "dynamicResponseFieldsDependsOn": [
         
       ],
-      "_id": "5e4e54f48608ad286b4e5262",
+      "_id": "5f869b2d935be97ae031a79a",
       "name": "Add Order",
       "id": "add-order",
       "description": "Creates a new Order",
@@ -8167,7 +8214,7 @@
       "dynamicResponseFieldsDependsOn": [
         
       ],
-      "_id": "5e4e54f48608ad286b4e5261",
+      "_id": "5f869b2d935be97ae031a799",
       "name": "Add Order",
       "id": "add-order-new",
       "description": "Creates a new Order",
@@ -8781,7 +8828,7 @@
       "dynamicResponseFieldsDependsOn": [
         
       ],
-      "_id": "5e4e54f48608ad286b4e5260",
+      "_id": "5f869b2d935be97ae031a798",
       "name": "Add or Update Product",
       "id": "add-product",
       "description": "Creates a new Product or Updates an existing Product",
@@ -8955,7 +9002,7 @@
       "dynamicResponseFieldsDependsOn": [
         
       ],
-      "_id": "5e4e54f48608ad286b4e525f",
+      "_id": "5f869b2d935be97ae031a797",
       "id": "add-variant",
       "name": "Add Product Variant",
       "description": "Creates a new Product Variant",
@@ -9080,7 +9127,7 @@
       "dynamicResponseFieldsDependsOn": [
         
       ],
-      "_id": "5e4e54f48608ad286b4e525e",
+      "_id": "5f869b2d935be97ae031a796",
       "id": "archive-order",
       "name": "Archive an Order",
       "description": "Archives an existing Order",
@@ -9118,7 +9165,7 @@
       "dynamicResponseFieldsDependsOn": [
         
       ],
-      "_id": "5e4e54f48608ad286b4e525d",
+      "_id": "5f869b2d935be97ae031a795",
       "name": "Search a Customer",
       "id": "search-customer",
       "description": "Search for a Customer",
@@ -9376,7 +9423,7 @@
       "dynamicResponseFieldsDependsOn": [
         
       ],
-      "_id": "5e4e54f48608ad286b4e525c",
+      "_id": "5f869b2d935be97ae031a794",
       "id": "search-order",
       "name": "Search an order",
       "description": "Search an Order based on Order Id or Customer Email",
@@ -10439,7 +10486,7 @@
       "dynamicResponseFieldsDependsOn": [
         
       ],
-      "_id": "5e4e54f48608ad286b4e525b",
+      "_id": "5f869b2d935be97ae031a793",
       "name": "Search a Product",
       "id": "search-product",
       "description": "Search for a Product",
@@ -10551,7 +10598,7 @@
       "dynamicResponseFieldsDependsOn": [
         
       ],
-      "_id": "5e4e54f48608ad286b4e525a",
+      "_id": "5f869b2d935be97ae031a792",
       "id": "search-variant",
       "name": "Search a Product Variant",
       "description": "Search Product Variants based on title",
@@ -10720,7 +10767,7 @@
       "dynamicResponseFieldsDependsOn": [
         
       ],
-      "_id": "5e4e54f48608ad286b4e5259",
+      "_id": "5f869b2d935be97ae031a791",
       "id": "tag-customer",
       "name": "Tag a Customer",
       "description": "Add Tags to an existing Customer",
@@ -10768,7 +10815,7 @@
       "dynamicResponseFieldsDependsOn": [
         
       ],
-      "_id": "5e4e54f48608ad286b4e5258",
+      "_id": "5f869b2d935be97ae031a790",
       "id": "update-variant",
       "name": "Update Product Variant",
       "description": "Updates an existing Product Variant",
@@ -10885,60 +10932,12 @@
       ]
     }
   ],
-  "auth": {
-    "type": "OAuth2",
-    "authParams": {
-      "site": "https://www.shopify.com",
-      "clientID": "4c6cb4f2f59c0fec274bca8883700c42",
-      "clientSecret": "409016ebed98a3c270711f339ffc8a5b",
-      "redirect_uri": "https://api.automate.io/auth/shopify/callback",
-      "tokenPath": "/admin/oauth/access_token",
-      "authorizationPath": "/admin/oauth/authorize"
-    },
-    "authStrategy": "function authStrategy(hashedParams, hashedUtils, callback) {\n\n    var retObj      = {status: \"ERROR\"};\n    var scope       = 'read_orders,write_orders,read_customers,write_customers,read_products,write_products,read_content,write_content,read_fulfillments,write_inventory';\n    var authParams;\n    var oauth2;\n    var path;\n    var fetchedParams\n    var authorization_uri;\n\n    // if no oauth2 util present or appInfo\n    if (!(hashedUtils || {}).oauth2 && !(hashedParams || {}).appInfo) {\n      retObj.error = { code: 'ERROR_MISSING_PARAM', message: 'authStrategy: Missing simple-oauth2 object in the hashedUtils or apInfo in hashParams' }\n      callback(retObj)\n      return;\n\n    } else if (!(hashedParams['appInfo']['auth'] || {}).authParams) {\n      retObj.error = { code: 'ERROR_MISSING_PARAM', message: \"authStrategy: Missing authParams in the auth\" };\n      callback(retObj);\n      return;\n    }\n\n    // fetching the authParams and user input\n    authParams      = hashedParams['appInfo']['auth']['authParams'];\n    fetchedParams   = JSON.parse(hashedParams['params']);\n\n    // checking if any authParam is missing\n    if (!authParams['redirect_uri'] || !authParams['authorizationPath'] || !authParams['clientID']) {\n        retObj.error = {code: 'ERROR_MISSING_PARAM', message: \"authStrategy: Missing parameters in authParams\" };\n        callback(retObj);\n        return;\n\n    } else {\n        // creating a oauth2 object\n        let site = 'https://' + fetchedParams['shopName'] + '.myshopify.com'\n        if(fetchedParams['shop']){\n          site = `https://${fetchedParams['shop']}`\n        }\n        oauth2 = hashedUtils.oauth2({\n          clientID: authParams['clientID'] || fetchedParams['clientID'],\n          site: site,\n          authorizationPath: authParams['authorizationPath'] || fetchedParams['authorizationPath']\n        });\n\n        // getting authorizeURL\n        authorization_uri = oauth2.authCode.authorizeURL({\n          client_id   : authParams['clientID'] || fetchedParams['clientID'],\n          scope       : scope,\n          redirect_uri: authParams['redirect_uri'] || fetchedParams['redirect_uri']\n\n        });\n\n        // success return object to the callback\n        retObj.status = 'SUCCESS';\n        retObj.data = { authorization_uri: authorization_uri };\n        callback(retObj);\n    }\n}",
-    "authCallBack": "function authCallback(hashedParams, hashedUtils, callback) {\n\n    var retObj  = {status: \"ERROR\"};\n    var params  = [];\n    var appInfo;\n    var oauth2;\n    var authParams;\n    var code;\n\n    // if queryobj not present in the hashedParam\n    \n    if (!((hashedParams || {})).queryObj || !(hashedUtils || {}).oauth2) {\n        retObj.error = {\n            code    : 'ERROR_MISSING_PARAM', \n            message : 'authCallback: Missing query parameters in the hashedParams or simple-oauth util' \n        };\n        callback(retObj);\n        return;\n\n    }\n\n    // fetching the queryObj\n    var queryObj = hashedParams.queryObj;\n    \n    // if code in queryObj is missing\n    if (!queryObj.code) {\n        retObj.error = { \n            code    : 'ERROR_MISSING_PARAM', \n            message : 'authCallback: Missing code in the queryObj'\n        };\n        callback(retObj);\n        return;\n    }\n\n    // fetching the app\n    authParams  =   hashedParams['appInfo']['auth']['authParams'];\n    oauth2 = hashedUtils.oauth2({\n        clientID    : authParams['clientID'],\n        clientSecret: authParams['clientSecret'],\n        site        : 'https://' + queryObj['shop'],\n        tokenPath   : authParams['tokenPath']\n    });\n\n    // fetching code\n    code = queryObj.code;\n\n    oauth2.authCode.getToken({\n        code         : code,\n        client_id    : authParams['clientID'],\n        client_secret: authParams['clientSecret'],\n    }, saveToken, this);\n\n    // to save the token and shop name\n    function saveToken(ERROR, result) {\n        if (ERROR) {\n            retObj.error = {\n                 code   : 'ERROR_AUTH',\n                 message: 'Access Token ERROR ' + ERROR \n            };\n            callback(retObj);\n            return;\n        } else {\n            let identifier = ''\n            if (queryObj['shop']) {\n                const splitArr = queryObj['shop'].split('.')\n                if (splitArr[0]) {\n                    identifier = splitArr[0]\n                }\n            }\n            if (result && result['access_token']) {\n                params.push({ 'id': 'access_token', value: result['access_token'] });\n                params.push({ 'id': 'shop' , value: queryObj['shop']});\n                params.push({ id: 'identifier', value: identifier })\n                retObj.status = 'SUCCESS';\n                retObj.data   = { oauth2Info: result, params: params };\n\n          \n                callback(retObj);\n                return;\n            } else {\n                retObj.error = { code: 'ERROR_AUTH', message: 'Cannot retrieve all the required tokens ' };\n                callback(retObj);\n                return;\n            }\n        }\n    }\n}",
-    "authDeleteRequest": "function authDeleteRequest(params, utils, callback) {\n  const retObj = {}\n  if (!params || !params.userApp || !params.appInfo) {\n    retObj.status = 'ERROR'\n    retObj.error = {\n      message: 'userapp or appinfo is missing from params'\n    }\n    return callback(retObj)\n  }\n\n  const fetchedParams = params.userApp.fetchAuthParams(params.appInfo)\n\n  if (!fetchedParams || !fetchedParams.access_token) {\n    retObj.status = 'ERROR'\n    retObj.error = {\n      message: 'auth params are missing'\n    }\n    return callback(retObj)\n  }\n\n  const { access_token } = fetchedParams\n\n  const shopUrlObj = params.userApp.params.find(param => param.id === 'shop')\n\n  if (!shopUrlObj || !shopUrlObj.value) {\n    retObj.status = 'ERROR'\n    retObj.error = {\n      message: 'shop url is missing from userapp'\n    }\n    return callback(retObj)\n  }\n\n  const shopUrl = shopUrlObj.value\n\n  const url = `https://${shopUrl}/admin/api_permissions/current.json`\n\n  const options = {\n    url,\n    method: 'DELETE',\n    headers: {\n      'X-Shopify-Access-Token': access_token,\n      'Content-Type': 'application/json',\n      'Accept': 'application/json'\n    },\n    json: true\n  }\n\n  retObj.status = 'SUCCESS'\n  retObj.data = { options }\n\n  return callback(retObj)\n}",
-    "authDeleteParse": "function authDeleteParse(params, utils, callback) {\n  const retObj = {}\n\n  if (!params || !params.response || !params.body) {\n    retObj.status = \"ERROR\"\n    retObj.error = {\n      message: 'response or body is missing from params',\n      code: 'ERROR_MISSING_PARAM'\n    }\n    return callback(retObj)\n  }\n\n  const { response, body } = params\n\n  if (response.statusCode === 200) {\n    retObj.status = 'SUCCESS'\n  } else {\n    retObj.status = \"ERROR\"\n    const errors = body.errors || '';\n    let errorMessage = '';\n\n    //genrateErrorMessage\n    if (errors) {\n      if (typeof errors == 'string')\n        errorMessage = errors;\n      else {\n        Object.keys(errors).forEach(function (key) {\n          errorMessage += key + ': ';\n          if (errors[key] && errors[key] instanceof Array)\n            errorMessage += errors[key].join(',');\n          else if (typeof errors[key] == 'string')\n            errorMessage += errors[key];\n          else\n            errorMessage += errors[key];\n          errorMessage += ', ';\n        });\n      }\n    }\n\n    if (response.statusCode === 401) {\n      retObj.error = {\n        code: 'ERROR_AUTH',\n        message: 'Unauthorized. Did you uninstall Automate.io in your Shopify account?'\n      }\n      retObj.errorCode = 'ERROR_AUTH'\n    } else if (response.statusCode === 429) {\n      retObj.error = {\n        code: 'ERROR_RATE_LIMIT',\n        message: errorMessage ? errorMessage : 'Too many requests, request rate limit exceeded'\n      }\n      retObj.errorCode = 'ERROR_RATE_LIMIT'\n    } else {\n      retObj.error = {\n        code: 'ERROR_UNKNOWN',\n        message: errorMessage ? errorMessage : `Error occured with status code ${response.statusCode || ''}`\n      }\n    }\n  }\n  return callback(retObj)\n}",
-    "authObjectRequest": "function authObjectRequest(params, utils, callback) {\n\n    var retObj          = {status: \"ERROR\"};\n    var url             = '/admin/api/2019-04/shop.json';\n    var options;\n    if (!params) {\n        retObj.status = 'ERROR'\n        retObj.error = {\n          message: 'params are missing',\n          code: \"ERROR_MISSING_PARAMS\"\n        }\n        return callback(retObj)\n      }\n    \n  \n      // fetch the auth params for given userapp\n      let authData = params['authCallbackData']\n\n      let access_token = authData.params && authData.params.find(p => p.id === 'access_token') ? authData.params.find(p => p.id === 'access_token') : null\n      let shopUrl = authData.params && authData.params.find(p => p.id === 'shop') ? authData.params.find(p => p.id === 'shop') : null\n      let identifier = authData.params && authData.params.find(p => p.id === 'identifier') ? authData.params.find(p => p.id === 'identifier') : null\n\n      var oauthParams = [access_token,shopUrl,identifier]\n        \n      access_token = access_token && access_token.value ? access_token.value : null\n      shopUrl = shopUrl && shopUrl.value ? shopUrl.value : null\n    \n      \n      // if the access token not available than return with error object\n      if (!access_token || !shopUrl) {\n          // checking for access token\n          retObj['error']             = {};\n          retObj['error']['code']     = 'ERROR_MISSING_PARAM';\n          retObj['error']['message']  = \"Missing access token in the fetched auth params\"; \n          callback(retObj);\n          return;\n  \n      }  else {\n          // compiling the options for searching prodcut for the given title of product\n          options = {\n              method: 'GET',\n              headers: {\n                  'X-Shopify-Access-Token': access_token,\n                  'Content-Type'          : 'application/json',\n              },\n              url: 'https://' + shopUrl + url,\n              json: true\n          }\n\n          retObj.step = {oauthParams : oauthParams}\n          retObj['status']        = \"SUCCESS\";\n          retObj['data']          = { options: options };\n      } \n    callback(retObj);\n  }",
-    "authObjectParse": "function authObjectParse(params, utils, callback) {\n    let retObj = {}\n    let response = params['response']\n    let authData = params['authCallbackData']\n    let oauthParams = []\n    let body\n  \n    // Validate User params\n    if (!response || !response.body) {\n  \n      retObj['status'] = 'ERROR'\n      retObj['error'] = {}\n      retObj['error']['code'] = 'ERROR_MISSING_PARAM'\n      retObj['error']['message'] = 'Error: Missing body.'\n  \n    } else {\n  \n      body = response.body\n      oauthParams = params.step ? params.step.oauthParams : []\n      if (body && body.shop) {\n        if (body && body.shop && body.shop.name && body.shop.email) {\n          retObj.status = 'SUCCESS'\n          retObj.data = {\n            oauth2Info: authData.oauth2Info,\n            params: oauthParams\n          }\n          retObj.user = {\n            name: body.shop.name ,\n            email: body.shop.email\n          }\n        } else {\n          retObj['status'] = 'ERROR'\n          retObj['message'] = 'Missing user name and email from body in authentication flow'\n          retObj['errorCode'] = 'ERROR_UNKOWN'\n        }\n  \n      } \n    }\n  \n    return callback(retObj)\n  }\n  ",
-    "authRedirectURL": "/landing/shopify",
-    "params": [
-      {
-        "fixedValueSource": [
-          
-        ],
-        "inputType": "input",
-        "name": "Shop Name",
-        "id": "shopName",
-        "domain": ".myshopify.com",
-        "protocol": "https://",
-        "type": "Subdomain",
-        "required": true,
-        "description": "Name of your shop on shopify. Example  https://{shopname}.myshopify.com/",
-        "input": true,
-        "persist": true
-      }
-    ],
-    "response": [
-      {
-        "id": "access_token"
-      },
-      {
-        "id": "shop"
-      },
-      {
-        "id": "identifier"
-      }
-    ]
-  },
-  "logo": "assets/images/logos/shopify.png",
-  "description": "Create your online store and sell online with Shopify. Manage inventory, market products online and receive payments.",
+  "appId": "shopify",
   "draft": false,
+  "version": "1.0",
   "priority": 2,
   "app_url": "https://apps.shopify.com/automate-io",
   "category": "ecommerce",
-  "name": "Shopify",
-  "__v": 0,
   "beta": false,
   "premium": true
 }
