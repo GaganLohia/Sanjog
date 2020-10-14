@@ -1,11 +1,10 @@
 {
-	"__v": 0,
-	"_id": "588b396851bf2abba7a7f2ef",
+	"_id": "55a0f47735d84029cdc3eb0e",
 	"actions": [
 		{
 			"dynamicInputFieldsDependsOn": [],
 			"dynamicResponseFieldsDependsOn": [],
-			"_id": "5e4e54f48608ad286b4e5264",
+			"_id": "5f869b2d935be97ae031a79c",
 			"id": "add-blog-entry",
 			"name": "Add Blog Entry",
 			"description": "Creates a new Blog Post",
@@ -104,7 +103,7 @@
 		{
 			"dynamicInputFieldsDependsOn": [],
 			"dynamicResponseFieldsDependsOn": [],
-			"_id": "5e4e54f48608ad286b4e5263",
+			"_id": "5f869b2d935be97ae031a79b",
 			"name": "Add or Update Customer",
 			"id": "add-customer",
 			"description": "Creates a new Customer or Updates an existing Customer",
@@ -393,7 +392,7 @@
 		{
 			"dynamicInputFieldsDependsOn": [],
 			"dynamicResponseFieldsDependsOn": [],
-			"_id": "5e4e54f48608ad286b4e5262",
+			"_id": "5f869b2d935be97ae031a79a",
 			"name": "Add Order",
 			"id": "add-order",
 			"description": "Creates a new Order",
@@ -754,7 +753,7 @@
 		{
 			"dynamicInputFieldsDependsOn": [],
 			"dynamicResponseFieldsDependsOn": [],
-			"_id": "5e4e54f48608ad286b4e5261",
+			"_id": "5f869b2d935be97ae031a799",
 			"name": "Add Order",
 			"id": "add-order-new",
 			"description": "Creates a new Order",
@@ -1280,7 +1279,7 @@
 		{
 			"dynamicInputFieldsDependsOn": [],
 			"dynamicResponseFieldsDependsOn": [],
-			"_id": "5e4e54f48608ad286b4e5260",
+			"_id": "5f869b2d935be97ae031a798",
 			"name": "Add or Update Product",
 			"id": "add-product",
 			"description": "Creates a new Product or Updates an existing Product",
@@ -1430,7 +1429,7 @@
 		{
 			"dynamicInputFieldsDependsOn": [],
 			"dynamicResponseFieldsDependsOn": [],
-			"_id": "5e4e54f48608ad286b4e525f",
+			"_id": "5f869b2d935be97ae031a797",
 			"id": "add-variant",
 			"name": "Add Product Variant",
 			"description": "Creates a new Product Variant",
@@ -1537,7 +1536,7 @@
 		{
 			"dynamicInputFieldsDependsOn": [],
 			"dynamicResponseFieldsDependsOn": [],
-			"_id": "5e4e54f48608ad286b4e525e",
+			"_id": "5f869b2d935be97ae031a796",
 			"id": "archive-order",
 			"name": "Archive an Order",
 			"description": "Archives an existing Order",
@@ -1569,7 +1568,7 @@
 		{
 			"dynamicInputFieldsDependsOn": [],
 			"dynamicResponseFieldsDependsOn": [],
-			"_id": "5e4e54f48608ad286b4e525d",
+			"_id": "5f869b2d935be97ae031a795",
 			"name": "Search a Customer",
 			"id": "search-customer",
 			"description": "Search for a Customer",
@@ -1817,7 +1816,7 @@
 		{
 			"dynamicInputFieldsDependsOn": [],
 			"dynamicResponseFieldsDependsOn": [],
-			"_id": "5e4e54f48608ad286b4e525c",
+			"_id": "5f869b2d935be97ae031a794",
 			"id": "search-order",
 			"name": "Search an order",
 			"description": "Search an Order based on Order Id or Customer Email",
@@ -2872,7 +2871,7 @@
 		{
 			"dynamicInputFieldsDependsOn": [],
 			"dynamicResponseFieldsDependsOn": [],
-			"_id": "5e4e54f48608ad286b4e525b",
+			"_id": "5f869b2d935be97ae031a793",
 			"name": "Search a Product",
 			"id": "search-product",
 			"description": "Search for a Product",
@@ -2976,7 +2975,7 @@
 		{
 			"dynamicInputFieldsDependsOn": [],
 			"dynamicResponseFieldsDependsOn": [],
-			"_id": "5e4e54f48608ad286b4e525a",
+			"_id": "5f869b2d935be97ae031a792",
 			"id": "search-variant",
 			"name": "Search a Product Variant",
 			"description": "Search Product Variants based on title",
@@ -3133,7 +3132,7 @@
 		{
 			"dynamicInputFieldsDependsOn": [],
 			"dynamicResponseFieldsDependsOn": [],
-			"_id": "5e4e54f48608ad286b4e5259",
+			"_id": "5f869b2d935be97ae031a791",
 			"id": "tag-customer",
 			"name": "Tag a Customer",
 			"description": "Add Tags to an existing Customer",
@@ -3173,7 +3172,7 @@
 		{
 			"dynamicInputFieldsDependsOn": [],
 			"dynamicResponseFieldsDependsOn": [],
-			"_id": "5e4e54f48608ad286b4e5258",
+			"_id": "5f869b2d935be97ae031a790",
 			"id": "update-variant",
 			"name": "Update Product Variant",
 			"description": "Updates an existing Product Variant",
@@ -3282,9 +3281,9 @@
 		"type": "OAuth2",
 		"authParams": {
 			"site": "https://www.shopify.com",
-			"clientID": "4c6cb4f2f59c0fec274bca8883700c42",
-			"clientSecret": "409016ebed98a3c270711f339ffc8a5b",
-			"redirect_uri": "https://api.automate.io/auth/shopify/callback",
+			"clientID": "95eb9bb6cc2cd8f2dfc107afabd2184e",
+			"clientSecret": "3cfe99b906cadcea853f5d2c93cce50a",
+			"redirect_uri": "https://api-dev.automate.io/auth/shopify/callback",
 			"tokenPath": "/admin/oauth/access_token",
 			"authorizationPath": "/admin/oauth/authorize"
 		},
@@ -3342,7 +3341,7 @@
 			"source": {
 				"type": "poll",
 				"initialPollRequest": "function initialPollRequest(hashedParams, utils, callback) {\n  \n  // storing the time milliseconds\n  var TimeStamp = Date.now();\n  var retObj    = {};\n\n  retObj['status']           = \"SUCCESS\";\n  retObj['data']             = {};\n  retObj['data']['pollData'] = {\n      status: \"SUCCESS\",\n      data: {\n        time: TimeStamp\n      }\n  };\n\n  callback(retObj);\n}",
-				"initialPollParse": "function (){ }",
+				"initialPollParse": "function(){ }",
 				"pollRequest": "function pollRequest(params, utils, callback) {\n\n    var retObj             = {status: \"ERROR\"};\n    var url                = \"/admin/checkouts.json\";\n    var currentTimeMS      = Date.now();\n    var millisecondsInHour = 3600000;\n    var minDate;\n    var maxDate;\n    var shopUrl;\n    var fetchedAuthParams;\n    var userInputHours;\n    var workflow;\n    var pollDate;\n    var time;\n    var options;\n\n    // checking if any input param is missing\n    if (!params || !params['appinfo'] || !params['userapp'] || !params['workflow']) {\n        retObj['error']             = {};\n        retObj['error']['code']     = \"ERROR_MISSING_PARAM\";\n        retObj['error']['message']  = \"PollRequest: Input parameters are missing\";\n        callback(retObj);\n        return;\n    }\n\n    // Fetch Auth Params\n    fetchedAuthParams = params.userapp.fetchAuthParams(params.appinfo);\n    // fetching the workflow for pollData\n    workflow          = params['workflow'];\n    // fetching the shop url\n    shopUrl =  params['userapp']['params'].find(p => p.id === 'shop');\n    // fetching the user input hours\n    if(workflow && workflow['trigger'] && workflow['trigger']['params'])\n        userInputHours = workflow['trigger']['params'].find(p =>p.id === 'age');\n\n    // if the auth params are missing, here access_token\n    if (!fetchedAuthParams || !fetchedAuthParams['access_token'] || !shopUrl || !shopUrl.value) {\n        retObj['error']             = {};\n        retObj['error']['code']     = \"ERROR_MISSING_PARAM\";\n        retObj['error']['message']  = \"PollRequest: Missing the auth params\";\n\n    }else if (!workflow['trigger'] || !workflow['trigger']['pollData'] \n                                   || !workflow['trigger']['pollData']['data']['time']) {\n        // in case the workflow related pollData is missing\n        retObj['error']             = {};\n        retObj['error']['code']     = \"ERORR_MISSING_PARAM\";\n        retObj['error']['message']  = \"PollRequest: Missing the workflow poll data\";\n\n    } else if( !userInputHours || !userInputHours.value){\n\n        // in case the workflow params are missing\n        retObj['error']             = {};\n        retObj['error']['code']     = \"ERORR_MISSING_PARAM\";\n        retObj['error']['message']  = \"PollRequest: Missing the workflow trigger params\";\n\n    } else {\n\n        // when everything is fine, creating request data\n        time    = workflow['trigger']['pollData']['data']['time'];\n        // calculating the after time \n        minDate = new Date(time - userInputHours.value * millisecondsInHour).toISOString();\n        // calculating the before time\n        maxDate = new Date(currentTimeMS - userInputHours.value * millisecondsInHour).toISOString();\n    \n        // compiling the options\n        options =   {\n            method : 'GET',\n            url    : 'https://' + shopUrl.value + url,\n            json   : true,\n            headers:   {\n                'X-Shopify-Access-Token' : fetchedAuthParams['access_token'],\n                'Content-Type'           : 'application/json'\n            },\n            qs   : {\"created_at_min\": minDate, \"created_at_max\": maxDate}\n        }\n        retObj['status'] = \"SUCCESS\";\n        retObj['data']   = { options };\n        retObj['step']   = {\"value\" : currentTimeMS};\n    }\n    callback(retObj);\n}",
 				"pollParse": "function pollParse(params, utils, callback) {\n\n    var abandonedCheckouts = [];\n    var retObj = { status: \"ERROR\" };\n    var skipFields = ['note_attributes', 'token', 'cart_token', 'default', 'shipping_lines', 'applied_discounts', 'tax_lines', 'discount_codes', 'tax_lines',];\n    var customerData = {};\n    var checkoutData = {};\n    var checkoutObj = {};\n    var lineItemPrefix;\n    var tempcheckoutObj;\n    var abandCheck;\n    var pollRequestTime;\n    var response;\n    var parsedBody;\n    var errorMessage;\n    var errors;\n\n    // if any required param is missing from the input\n    if (!params || !params['response'] || !params['body'] || !utils || !utils.libDate) {\n        retObj['error'] = {};\n        retObj['error']['code'] = \"ERROR_MISSING_PARAM\";\n        retObj['error']['message'] = \"PollParse: Missing response, body or libDate util\";\n        callback(retObj);\n        return;\n    }\n    else {\n        pollRequestTime = params['step'] && params['step']['value'] ? params['step']['value'] : Date.now();\n        response = params['response'];\n        parsedBody = params['body'];\n\n        // if the request is successful\n        if (response['statusCode'] && response['statusCode'] === 200) {\n\n            if (parsedBody['checkouts'].length) {\n                // when there are new entries\n\n                parsedBody['checkouts'].forEach(function (checkout, index) {\n                    tempcheckoutObj = {};\n\n                    Object.keys(checkout).forEach(function (field) {\n                        if (field === \"customer\") {\n\n                            Object.keys(checkout[field]).forEach(function (prop) {\n                                if (prop === \"default_address\") {\n                                    Object.keys(checkout[field][prop]).forEach(function (p) {\n                                        customerData[field + '_address_' + p] = checkout[field][prop][p] ? checkout[field][prop][p] : '';\n                                    }, this);\n                                } else {\n                                    if (prop === 'created_at' || prop === 'updated_at')\n                                        customerData[field + '_' + prop] = checkout[field][prop] ? utils.libDate.parseJSDateTimeToStandardString(checkout[field][prop]) : '';\n                                    else\n                                        customerData[field + '_' + prop] = checkout[field][prop] ? checkout[field][prop] : '';\n                                }\n                            }, this);\n\n                        } else if (field === \"line_items\") {\n\n                            //creating comma separated list of all line item names and ids\n\n                            let accumulated = null\n\n                            accumulated = checkout[field].reduce((acc, value) => {\n                                acc.line_item_ids.push(value.id ? value.id : '')\n                                acc.line_item_names.push(value.name ? value.name : '')\n                                acc.line_item_product_codes.push(value.product_id ? value.product_id : '')\n                                acc.line_item_titles.push(value.title ? value.title : '')\n                                acc.line_item_variant_ids.push(value.variant_id ? value.variant_id : '')\n                                acc.line_item_variant_titles.push(value.variant_title ? value.variant_title : '')\n                                acc.line_item_quantities.push(value.quantity ? value.quantity : '')\n                                acc.line_item_prices.push(value.price ? value.price : '')\n                                acc.line_item_skus.push(value.sku ? value.sku : '')\n                                acc.line_item_weights.push(value.grams ? value.grams : '')\n\n                                return acc\n                            }, {\n                                    line_item_ids: [],\n                                    line_item_names: [],\n                                    line_item_product_codes: [],\n                                    line_item_titles: [],\n                                    line_item_variant_ids: [],\n                                    line_item_variant_titles: [],\n                                    line_item_quantities: [],\n                                    line_item_prices: [],\n                                    line_item_skus: [],\n                                    line_item_weights: []\n                                }\n                            )\n\n                            Object.keys(accumulated).forEach(prop => {\n                                let fld = prop\n                                let data = accumulated[prop]\n\n                                if (data && data.length) {\n                                    tempcheckoutObj[fld] = data.toString()\n                                }\n                            })\n\n                            // var line_item_names = \"\";\n                            // var line_item_product_codes = \"\";\n\n                            // checkout[field].forEach(function(item){\n                            //     line_item_product_codes += item.product_id + \",\";\n                            //     line_item_names += item.name + \",\";\n                            // });\n\n                            // if (line_item_product_codes && line_item_names) {\n                            //     tempcheckoutObj['line_item_product_codes'] = line_item_product_codes.slice(0, line_item_product_codes.length - 1);\n                            //     tempcheckoutObj['line_item_names'] = line_item_names.slice(0, line_item_names.length - 1);    \n                            // }\n\n                            checkout[field].every(function (item, innerIndex) {\n                                lineItemPrefix = index === 0 ? 'first_' : index === 1 ? 'second_' : 'third_';\n\n                                // only fetching top 3 line items\n                                if (innerIndex === 2)\n                                    return false;\n\n                                Object.keys(item).forEach(function (el) {\n                                    if (skipFields.indexOf(el) < 0)\n                                        tempcheckoutObj[lineItemPrefix + 'line_Item_' + el] = item[el] ? item[el] : '';\n                                }, this);\n\n                            }, this);\n\n                        } else if (field === \"shipping_address\" || field === \"billing_address\") {\n\n                            Object.keys(checkout[field]).forEach(function (prop) {\n                                tempcheckoutObj[field + '_' + prop] = checkout[field][prop] ? checkout[field][prop] : '';\n                            }, this);\n\n                        } else if (skipFields.indexOf(field) < 0) {\n                            if (field === 'created_at' || field === 'updated_at')\n                                checkoutData[field] = checkout[field] ? utils.libDate.parseJSDateTimeToStandardString(checkout[field]) : '';\n                            else\n                                checkoutData[field] = checkout[field] ? checkout[field] : '';\n                        }\n                    }, this);\n\n                    // reordering the JSON data\n                    [checkoutData, customerData, tempcheckoutObj].forEach(function (jsonObj) {\n                        Object.keys(jsonObj).forEach(function (key) {\n                            checkoutObj[key] = jsonObj[key];\n                        }, this);\n                    }, this);\n\n                    abandCheck = {};\n                    abandCheck['response'] = { \"params\": checkoutObj };\n                    abandonedCheckouts.push({ \"newObject\": abandCheck, \"hash\": { \"id\": checkout.id } });\n\n                }, this);\n\n                retObj['status'] = \"SUCCESS\";\n                retObj['data'] = {\n                    pollData: {\n                        status: 'SUCCESS',\n                        data: {\n                            time: pollRequestTime ? pollRequestTime : null\n                        }\n                    },\n                    objects: abandonedCheckouts\n                };\n            }\n            else {\n                // in case of no new lead found\t\n                retObj['status'] = \"SUCCESS\";\n                retObj['data'] = {};\n                retObj['data']['objects'] = [];\n                retObj['data']['pollData'] = {\n                    status: \"SUCCESS\",\n                    data: {\n                        time: pollRequestTime ? pollRequestTime : null\n                    }\n                };\n            }\n\n        } else {\n            // when error data present, flattening the object\n            errors = params['body']['errors'];\n            if (errors) {\n                errorMessage = '';\n                if (typeof errors == 'string')\n                    errorMessage = errors;\n                else {\n                    Object.keys(errors).forEach(function (key) {\n                        errorMessage += key + ': ';\n                        if (errors[key] && errors[key] instanceof Array)\n                            errorMessage += errors[key].join(',');\n                        else if (typeof errors[key] == 'string')\n                            errorMessage += errors[key];\n                        else\n                            errorMessage += errors[key];\n                        errorMessage += ', ';\n                    });\n                }\n            }\n            if (response['statusCode'] && response['statusCode'] == '401') {\n                // when oauth errors occurs because of wrong access token\n                retObj['error'] = {\n                    code: 'ERROR_AUTH',\n                    message: 'Unauthorized. Did you uninstall Automate.io in your Shopify account?'\n                };\n\n            } else if (response['statusCode'] && response['statusCode'] == '429') {\n                // when rate limit occurs \n                retObj['error'] = {\n                    code: 'ERROR_RATE_LIMIT',\n                    message: errorMessage ? errorMessage : 'Too many requests, request rate limit exceeded'\n                };\n\n            } else if (response['statusCode']) {\n                // for all the other errors\n                retObj['error'] = {\n                    code: 'ERROR_UNKNOWN',\n                    message: errorMessage ? errorMessage : 'Unknown error occurred with status code' + response['statusCode']\n                };\n            }\n        }\n    }\n    callback(retObj);\n}"
 			},
